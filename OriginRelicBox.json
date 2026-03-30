@@ -1,0 +1,11 @@
+{
+  "id": "OriginRelicBox",
+  "name": "Origin Relic Box",
+  "author": "病加铁",
+  "description": "增加一些遗物。",
+  "version": "1.0",
+  "has_pck": true,         
+  "has_dll": true,        
+  "dependencies": ["BaseLib"],     
+  "affects_gameplay": true 
+}
