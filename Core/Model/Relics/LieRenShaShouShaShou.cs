@@ -26,7 +26,17 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
 
     public override int DisplayAmount => ShaShou_Counter;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5, ValueProp.Unpowered), new CardsVar(2), new EnergyVar(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new BlockVar(5, ValueProp.Unpowered),
+         new CardsVar(2), 
+         new EnergyVar(1),
+         new DynamicVar("LieRenShaShouShaShou_GetBlockAmount",8m),
+         new DynamicVar("LieRenShaShouShaShou_GetHeal",16m),
+         new DynamicVar("LieRenShaShouShaShou_GetHealAmount", 1m),
+         new DynamicVar("LieRenShaShouShaShou_GetPower",25m),
+         new DynamicVar("LieRenShaShouShaShou_ExtraDraw",32m),
+         new DynamicVar("LieRenShaShouShaShou_ExtraEnergy",40m),
+         ];
 
 
     private int _counter;
@@ -56,15 +66,14 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
         {
             AssertMutable();
             _cardsPlayedThisTurn = value;
-            InvokeDisplayAmountChanged();
         }
     }
 
     private bool _isGetBlock = false;
 
-    private bool isGetHeal = false;
+    private bool _isGetHeal = false;
 
-    private bool isGetPower = false;
+    private bool _isGetPower = false;
 
 
     public override decimal ModifyHandDraw(Player player, decimal count)
@@ -75,7 +84,7 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             return count;
         }
 
-        if (DisplayAmount < 40)
+        if (DisplayAmount < DynamicVars["LieRenShaShouShaShou_ExtraDraw"].BaseValue)
         {
             return count;
         }
@@ -93,29 +102,30 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             return;
 
         }
+        ShaShou_Counter++;
 
-        if (DisplayAmount >= 10 && !_isGetBlock)
+
+        if (DisplayAmount >= DynamicVars["LieRenShaShouShaShou_GetBlockAmount"].BaseValue && !_isGetBlock)
         {
             _isGetBlock = true;
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, null);
             Flash();
         }
 
-        if (DisplayAmount >= 20 && !isGetHeal)
+        if (DisplayAmount >= DynamicVars["LieRenShaShouShaShou_GetHeal"].BaseValue && !_isGetHeal)
         {
-            isGetHeal = true;
-            await CreatureCmd.Heal(Owner.Creature, 2);
+            _isGetHeal = true;
+            await CreatureCmd.Heal(Owner.Creature, DynamicVars["LieRenShaShouShaShou_GetHealAmount"].BaseValue);
             Flash();
         }
 
-        if (DisplayAmount >= 30 && !isGetPower)
+        if (DisplayAmount >= DynamicVars["LieRenShaShouShaShou_GetPower"].BaseValue && !_isGetPower)
         {
-            isGetPower = true;
+            _isGetPower = true;
 
             await PowerCmd.Apply<StrengthPower>(Owner.Creature, 1, Owner.Creature, null);
             await PowerCmd.Apply<DexterityPower>(Owner.Creature, 1, Owner.Creature, null);
         }
-        ShaShou_Counter++;
 
 
         if (_hunterKillerLived)
@@ -130,11 +140,8 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
 
     public override Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (player.Creature.CombatState!.RoundNumber <= 1)
-        {
-            ShaShou_Counter = 0;
-        }
-        if (DisplayAmount >= 50)
+
+        if (DisplayAmount >= DynamicVars["LieRenShaShouShaShou_ExtraEnergy"].BaseValue)
         {
             PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, this.Owner);
         }
@@ -172,7 +179,11 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
     {
         _hunterKillerLived = false;
 
+        _isGetBlock = false;
+        _isGetHeal = false;
+        _isGetPower = false;
 
+        ShaShou_Counter = 0;
 
         return Task.CompletedTask;
     }

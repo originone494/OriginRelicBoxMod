@@ -1,6 +1,6 @@
 {
   "ORIGINRELICBOX-LIE_REN_SHA_SHOU_SHA_SHOU.title": "猎人杀手杀手",
-  "ORIGINRELICBOX-LIE_REN_SHA_SHOU_SHA_SHOU.description": "战斗开始时，若房间中存在[gold]猎人杀手[/gold]，则获得效果：每打出一张牌，在本回合获得一点[gold]力量[/gold]，一点[gold]敏捷[/gold]。\n根据在一场战斗中打出牌的数量， 适用以下效果：\n[blue]10[/blue]张以上时：获得[blue]5[/blue]点格挡。\n[blue]20[/blue]张以上时：恢复[blue]1[/blue]点生命。\n[blue]30[/blue]张以上时：获得一点[gold]力量[/gold]和一点[gold]敏捷[/gold]。\n[blue]40[/blue]张以上：回合开始时抽[blue]2[/blue]张牌。\n[blue]50[/blue]张以上：回合开始时获得{Energy:energyIcons()}。",
+  "ORIGINRELICBOX-LIE_REN_SHA_SHOU_SHA_SHOU.description": "战斗开始时，若房间中存在[gold]猎人杀手[/gold]，则获得效果：每打出一张牌，在本回合获得一点[gold]力量[/gold]，一点[gold]敏捷[/gold]。\n根据在一场战斗中打出牌的数量， 适用以下效果：\n[blue]{LieRenShaShouShaShou_GetBlockAmount}[/blue]张以上时：获得[blue]5[/blue]点格挡。\n[blue]{LieRenShaShouShaShou_GetHeal}[/blue]张以上时：恢复[blue]{LieRenShaShouShaShou_GetHealAmount}[/blue]点生命。\n[blue]{LieRenShaShouShaShou_GetPower}[/blue]张以上时：获得一点[gold]力量[/gold]和一点[gold]敏捷[/gold]。\n[blue]{LieRenShaShouShaShou_ExtraDraw}[/blue]张以上：回合开始时抽[blue]2[/blue]张牌。\n[blue]{LieRenShaShouShaShou_ExtraEnergy}[/blue]张以上：回合开始时获得{Energy:energyIcons()}。",
   "ORIGINRELICBOX-LIE_REN_SHA_SHOU_SHA_SHOU.flavor": "猎人杀手保护协会表示强烈抗议！",
   "ORIGINRELICBOX-BAO_HU_SHE_YAO.title": "保护我方蛇咬",
   "ORIGINRELICBOX-BAO_HU_SHE_YAO.description": "战斗开始时，将一张[gold]蛇咬[/gold]加入手牌。\n回合开始时，你的手牌中每有一张[gold]蛇咬[/gold]，就给予全体敌人[blue]{BaoHuSheYao_PoisonCount}[/blue]层[gold]中毒[/gold]。",

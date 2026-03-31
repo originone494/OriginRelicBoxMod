@@ -60,7 +60,7 @@ public sealed class BaoHuSheYao : RelicModelBase
                     NCombatRoom.Instance!.CombatVfxContainer.AddChildSafely(child);
                 }
             }
-            await PowerCmd.Apply<PoisonPower>(base.Owner.Creature.CombatState.HittableEnemies, base.DynamicVars["BaoHuSheYao_PoisonCount"].BaseValue, Owner.Creature, null);
+            await PowerCmd.Apply<PoisonPower>(base.Owner.Creature.CombatState.HittableEnemies, DynamicVars["BaoHuSheYao_PoisonCount"].BaseValue, Owner.Creature, null);
         }
     }
 }
