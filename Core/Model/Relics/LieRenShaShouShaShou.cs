@@ -19,15 +19,18 @@ namespace OriginRelicBox.Relics;
 [Pool(typeof(SharedRelicPool))]
 public sealed class LieRenShaShouShaShou : RelicModelBase
 {
+
     public override RelicRarity Rarity => RelicRarity.Common;
 
     public override bool ShowCounter => true;
 
     public override int DisplayAmount => ShaShou_Counter;
 
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5, ValueProp.Unpowered), new CardsVar(2), new EnergyVar(1)];
+
+
     private int _counter;
 
-    [SavedProperty]
     public int ShaShou_Counter
     {
         get => _counter;
@@ -38,9 +41,6 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             InvokeDisplayAmountChanged();
         }
     }
-
-
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5, ValueProp.Unpowered), new CardsVar(2), new EnergyVar(1)];
 
     private bool _hunterKillerLived = false;
 
@@ -59,28 +59,13 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             InvokeDisplayAmountChanged();
         }
     }
-    public override async Task BeforeCombatStart()
-    {
 
-        if (DisplayAmount >= 10)
-        {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, null);
-            Flash();
-        }
+    private bool _isGetBlock = false;
 
-        if (DisplayAmount >= 20)
-        {
+    private bool isGetHeal = false;
 
-            await CreatureCmd.Heal(Owner.Creature, 2);
-            Flash();
-        }
+    private bool isGetPower = false;
 
-        if (DisplayAmount >= 30)
-        {
-            await PowerCmd.Apply<StrengthPower>(Owner.Creature, 1, Owner.Creature, null);
-            await PowerCmd.Apply<DexterityPower>(Owner.Creature, 1, Owner.Creature, null);
-        }
-    }
 
     public override decimal ModifyHandDraw(Player player, decimal count)
     {
@@ -89,10 +74,7 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
         {
             return count;
         }
-        if (player.Creature.CombatState!.RoundNumber > 1)
-        {
-            return count;
-        }
+
         if (DisplayAmount < 40)
         {
             return count;
@@ -111,10 +93,29 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             return;
 
         }
+
+        if (DisplayAmount >= 10 && !_isGetBlock)
+        {
+            _isGetBlock = true;
+            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, null);
+            Flash();
+        }
+
+        if (DisplayAmount >= 20 && !isGetHeal)
+        {
+            isGetHeal = true;
+            await CreatureCmd.Heal(Owner.Creature, 2);
+            Flash();
+        }
+
+        if (DisplayAmount >= 30 && !isGetPower)
+        {
+            isGetPower = true;
+
+            await PowerCmd.Apply<StrengthPower>(Owner.Creature, 1, Owner.Creature, null);
+            await PowerCmd.Apply<DexterityPower>(Owner.Creature, 1, Owner.Creature, null);
+        }
         ShaShou_Counter++;
-        
-
-
 
 
         if (_hunterKillerLived)
@@ -125,21 +126,24 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
             await PowerCmd.Apply<DexterityPower>(Owner.Creature, 1m, Owner.Creature, null, silent: true);
         }
 
-
     }
 
     public override Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (player.Creature.CombatState!.RoundNumber > 1)
+        if (player.Creature.CombatState!.RoundNumber <= 1)
         {
-            return Task.CompletedTask;
+            ShaShou_Counter = 0;
         }
         if (DisplayAmount >= 50)
         {
             PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, this.Owner);
         }
-        ShaShou_Counter = 0;
 
+        if (player.Creature.CombatState!.RoundNumber > 1)
+        {
+            return Task.CompletedTask;
+
+        }
 
         IReadOnlyList<Creature> creature = Owner.Creature.CombatState!.HittableEnemies;
         foreach (var monster in creature)
@@ -168,7 +172,7 @@ public sealed class LieRenShaShouShaShou : RelicModelBase
     {
         _hunterKillerLived = false;
 
-        
+
 
         return Task.CompletedTask;
     }

@@ -11,7 +11,7 @@ namespace OriginRelicBox.Relics;
     {
         get
         {
-            var path = $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".RelicImagePath();
+            var path = $"{this.GetType().Name}.png".RelicImagePath();
             return ResourceLoader.Exists(path) ? path : "relic.png".RelicImagePath();
         }
     }
@@ -20,7 +20,7 @@ namespace OriginRelicBox.Relics;
     {
         get
         {
-            var path = $"{Id.Entry.RemovePrefix().ToLowerInvariant()}_outline.png".RelicImagePath();
+            var path = $"{this.GetType().Name}_outline.png".RelicImagePath();
             return ResourceLoader.Exists(path) ? path : "relic_outline.png".RelicImagePath();
         }
     }
@@ -29,7 +29,7 @@ namespace OriginRelicBox.Relics;
     {
         get
         {
-            var path = $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".BigRelicImagePath();
+            var path = $"{this.GetType().Name}.png".BigRelicImagePath();
             return ResourceLoader.Exists(path) ? path : "relic.png".BigRelicImagePath();
         }
     }

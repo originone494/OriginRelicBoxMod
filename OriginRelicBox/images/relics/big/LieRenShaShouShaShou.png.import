@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://barm8ssfsrfxt"
-path="res://.godot/imported/jian_ying_power.png-3e622bd0e388731a636dd1e34ce59486.ctex"
+uid="uid://cpxpc0ypyrekx"
+path="res://.godot/imported/LieRenShaShouShaShou.png-e412bf726b8d42c25c1d57bc9cdf63ac.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://OriginRelicBox/images/powers/big/jian_ying_power.png"
-dest_files=["res://.godot/imported/jian_ying_power.png-3e622bd0e388731a636dd1e34ce59486.ctex"]
+source_file="res://OriginRelicBox/images/relics/big/LieRenShaShouShaShou.png"
+dest_files=["res://.godot/imported/LieRenShaShouShaShou.png-e412bf726b8d42c25c1d57bc9cdf63ac.ctex"]
 
 [params]
 
